@@ -1,0 +1,194 @@
+# =====================================================
+# .gitignore pour Projet Riada
+# =====================================================
+
+# =====================================================
+# FICHIERS SENSIBLES - NE JAMAIS COMMITTER
+# =====================================================
+
+# Fichiers de configuration avec credentials
+config.ini
+config.php
+config.json
+*.env
+.env.local
+.env.production
+
+# Fichiers de connexion MySQL
+my.cnf
+.my.cnf
+mysql.conf
+
+# Dumps de base de données avec données réelles
+*_dump.sql
+*_backup.sql
+backup_*.sql
+prod_*.sql
+production_*.sql
+
+# Logs contenant potentiellement des données sensibles
+*.log
+logs/
+error.log
+access.log
+
+# Clés et certificats
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+secrets/
+
+# =====================================================
+# SYSTÈMES D'EXPLOITATION
+# =====================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+
+# =====================================================
+# ÉDITEURS & IDEs
+# =====================================================
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# JetBrains (PhpStorm, IntelliJ, DataGrip)
+.idea/
+*.iml
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# MySQL Workbench
+*.mwb.bak
+*.mwb.beforefix
+
+# =====================================================
+# FICHIERS TEMPORAIRES
+# =====================================================
+
+# Fichiers temporaires généraux
+*.tmp
+*.temp
+*.bak
+*.old
+*.orig
+*.cache
+
+# Fichiers de verrouillage
+*.lock
+
+# =====================================================
+# DONNÉES DE TEST (si volumineuses)
+# =====================================================
+
+# Dumps de test volumineux (>10 MB)
+# Décommenter si nécessaire
+# test_data_large.sql
+# sample_data_big.sql
+
+# Exports CSV volumineux
+# *.csv
+# data/*.csv
+
+# =====================================================
+# FICHIERS DE BUILD & DÉPENDANCES
+# =====================================================
+
+# Node modules (si projet web avec Node.js)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Composer (si projet PHP)
+vendor/
+composer.lock
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+
+# =====================================================
+# DOCUMENTATION GÉNÉRÉE
+# =====================================================
+
+# Documentation auto-générée (garder les sources)
+docs/generated/
+docs/build/
+docs/_build/
+
+# =====================================================
+# FICHIERS SPÉCIFIQUES AU PROJET
+# =====================================================
+
+# Scripts de migration locaux
+migrations/local/
+migrations/temp/
+
+# Rapports de performance locaux
+benchmark_results/
+performance_tests/
+
+# Fichiers de test personnels
+test_perso.sql
+sandbox.sql
+playground.sql
+
+# =====================================================
+# NOTES DE DÉVELOPPEMENT
+# =====================================================
+
+# TODO lists et notes personnelles (non projet)
+TODO_perso.md
+NOTES_perso.md
+scratch.md
+
+# =====================================================
+# À GARDER (Exemples de fichiers à committer)
+# =====================================================
+
+# ✅ Scripts SQL de structure
+# !sql/*.sql
+
+# ✅ Documentation
+# !README.md
+# !docs/*.md
+
+# ✅ Données de test minimales
+# !sql/07_Insert_All_Data.sql
+
+# ✅ Scripts d'installation
+# !scripts/*.sh
