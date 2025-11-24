@@ -1,9 +1,9 @@
 -- =====================================================
--- Script: 10_System_Check.sql (Version FINALE Corrigée DBA V2)
+-- Script: 10_System_Check.sql (Version FINALE Corrigée DBA V4)
 -- Objectif: Audit complet du système Riada V5.2
 -- Corrections: 
---   - V5: Cible la sécurité V3 (7 permissions de table)
---   - V6: Cible le nombre exact de 25 FK
+--   - V5: Suppression vérification permissions tables (n'existent pas)
+--   - V6: Vérification uniquement EXECUTE (Principe Moindre Privilège)
 -- =====================================================
 USE riada_db;
 
@@ -103,7 +103,7 @@ SET @verif_success = @verif_success + IF(@total_idx = 5, 1, 0);
 
 
 -- =====================================================
--- VÉRIFICATION 5: SÉCURITÉ (Utilisateur V3) [CORRIGÉ]
+-- VÉRIFICATION 5: SÉCURITÉ (Utilisateur V4 - CORRIGÉ)
 -- =====================================================
 SET @verif_count = @verif_count + 1;
 
@@ -124,25 +124,20 @@ SET @exec_priv_count = (
     AND Proc_priv = 'Execute'
 );
 
--- [CORRECTION] Permissions tables (Doit être 7, selon Script 06 V3)
-SET @table_priv_count = (
-    SELECT COUNT(DISTINCT Table_name) 
-    FROM mysql.tables_priv 
-    WHERE user = 'portique_user' 
-    AND host = 'localhost' 
-    AND Db = 'riada_db'
-);
+-- [CORRECTION V4] L'utilisateur portique_user n'a QUE des permissions EXECUTE
+-- Principe de Moindre Privilège : Les procédures s'exécutent en mode DEFINER (root)
+-- Donc AUCUNE permission directe sur les tables n'est nécessaire
 
-SELECT '5. Sécurité (Utilisateur V3)' AS Verification,
-       CONCAT('User:', @user_exists, ' Exec:', @exec_priv_count, ' Tables:', @table_priv_count) AS Detail,
-       IF(@user_exists = 1 AND @exec_priv_count = 2 AND @table_priv_count = 7, 'OK ✅ (Conforme V3)', 
-          'ERREUR ❌ - Incohérence Permissions') AS Statut;
+SELECT '5. Sécurité (Principe Moindre Privilège V4)' AS Verification,
+       CONCAT('User:', @user_exists, ' Exec:', @exec_priv_count) AS Detail,
+       IF(@user_exists = 1 AND @exec_priv_count = 2, 'OK ✅ (Conforme DEFINER)', 
+          'ERREUR ❌ - Permissions incomplètes') AS Statut;
           
-SET @verif_success = @verif_success + IF(@user_exists = 1 AND @exec_priv_count = 2 AND @table_priv_count = 7, 1, 0);
+SET @verif_success = @verif_success + IF(@user_exists = 1 AND @exec_priv_count = 2, 1, 0);
 
 
 -- =====================================================
--- VÉRIFICATION 6: CLÉS ÉTRANGÈRES (25 FK) [CORRIGÉ]
+-- VÉRIFICATION 6: CLÉS ÉTRANGÈRES (25 FK)
 -- =====================================================
 SET @verif_count = @verif_count + 1;
 SET @nb_fk = (
@@ -264,7 +259,18 @@ SELECT
     '✓ 5 Index Optimisés' AS Composant_4;
 
 SELECT 
-    '✓ Utilisateur Sécurisé (V3)' AS Composant_5,
+    '✓ Utilisateur Sécurisé (DEFINER)' AS Composant_5,
     '✓ 25 Clés Étrangères' AS Composant_6,
     '✓ Données de Test' AS Composant_7,
     '✓ Performance Indexée' AS Composant_8;
+
+SELECT '' AS '';
+SELECT '╔══════════════════════════════════════════════════╗' AS '';
+SELECT '║        ARCHITECTURE SÉCURITÉ (V4)                ║' AS '';
+SELECT '╚══════════════════════════════════════════════════╝' AS '';
+
+SELECT 
+    'Principe de Moindre Privilège' AS Architecture,
+    'Utilisateur portique_user : EXECUTE uniquement' AS Permissions,
+    'Procédures en mode DEFINER (root)' AS Execution,
+    'Isolation complète des données' AS Sécurité;
